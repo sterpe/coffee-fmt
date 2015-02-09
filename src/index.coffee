@@ -3,10 +3,16 @@ fs		= require 'fs'
 {format}	= require '.lib/format'
 TAB		= "\t"
 SPACE		= " "
-LINEBREAK	= "\n"
+LF		= "\n"
+CR		= "\r"
+LINEBREAK	=
+	LF: LF
+	CR: CR
+	CRLF: CR + LF
+	LFCR: LF + CR
 options		= 
 	tab: argv.indent_style is "space" ? SPACE : TAB
-	newLine: argv.new_line
+	newLine: LINEBREAK[argv.new_line] or LF
 
 options.tab += (SPACE for i in [1..argv.indent_size]).join ""
 
