@@ -23,7 +23,7 @@ gulp.task('coffee', ['clean'], function () {
 			'./src/**/*.coffee'
 		])
 		.pipe(coffee({
-
+			bare: true
 		}).on('error', gutil.log))
 		.pipe(gulp.dest('./lib'))
 		;

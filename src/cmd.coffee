@@ -2,7 +2,7 @@
 
 argv		= require('minimist') process.argv.slice(2)
 fs		= require 'fs'
-{format}	= require '.lib/format'
+{format}	= require './fmt'
 TAB		= "\t"
 SPACE		= " "
 LF		= "\n"
@@ -13,13 +13,13 @@ LINEBREAK	=
 	CRLF: CR + LF
 	LFCR: LF + CR
 options		= 
-	tab: argv.indent_style is "space" ? SPACE : TAB
+	tab: if argv.indent_style is "space" then SPACE else TAB
 	newLine: LINEBREAK[argv.new_line] or LF
 
-options.tab += (SPACE for i in [1..argv.indent_size]).join ""
+options.tab += (SPACE for i in [2..argv.indent_size]).join ""
 
 fmt = (filename, options) ->
-	code = fs.readfileSync filename
+	code = fs.readFileSync filename
 	code = code.toString()
 	code = format code, options
 	process.stdout.write code
