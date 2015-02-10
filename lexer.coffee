@@ -241,6 +241,10 @@ exports.Lexer = class Lexer
       if here.indexOf('\n') >= 0
         here = here.replace /// \n #{repeat ' ', @indent} ///g, '\n'
       @token 'HERECOMMENT', here, 0, comment.length
+    else
+      comment_text = comment.match /^[\n\S]*#[^\n\S]*([^\n]*)/
+      comment_text = comment_text[1]
+      @token "COMMENT", comment_text, 0, comment_text.length
     comment.length
 
   # Matches JavaScript interpolated directly into the source via backticks.
@@ -307,6 +311,12 @@ exports.Lexer = class Lexer
   lineToken: ->
     return 0 unless match = MULTI_DENT.exec @chunk
     indent = match[0]
+    console.log "@indent ", @indent
+    console.log "INDENT", indent, indent.length
+    console.log "CHUNK SLICE HERE: ", @chunk.slice(0, 50)
+    if @chunk.charAt(indent.length) is "#"
+      @newlineToken 0
+      return 1
     @seenFor = no
     size = indent.length - 1 - indent.lastIndexOf '\n'
     noNewlines = @unfinished()
@@ -378,13 +388,14 @@ exports.Lexer = class Lexer
   # Generate a newline token. Consecutive newlines get merged together.
   newlineToken: (offset) ->
     @tokens.pop() while @value() is ';'
-    @token 'TERMINATOR', '\n', offset, 0 unless @tag() is 'TERMINATOR'
+#    @token 'TERMINATOR', '\n', offset, 0 unless @tag() is 'TERMINATOR'
+    @token 'TERMINATOR', '\n', offset, 0
     this
 
   # Use a `\` at a line-ending to suppress the newline.
   # The slash is removed here once its job is done.
   suppressNewlines: ->
-    @tokens.pop() if @value() is '\\'
+#    @tokens.pop() if @value() is '\\'
     this
 
   # We treat all other single characters as a token. E.g.: `( ) , . !`
@@ -761,11 +772,11 @@ OPERATOR   = /// ^ (
 
 WHITESPACE = /^[^\n\S]+/
 
-COMMENT    = /^###([^#][\s\S]*?)(?:###[^\n\S]*|###$)|^(?:\s*#(?!##[^#]).*)+/
+COMMENT    = /^###([^#][\s\S]*?)(?:###[^\n\S]*|###$)|^(?:[^\n\S]*#(?!##[^#]).*)+/
 
 CODE       = /^[-=]>/
 
-MULTI_DENT = /^(?:\n[^\n\S]*)+/
+MULTI_DENT = /^(?:\n[^\n\S]*)/
 
 JSTOKEN    = /^`[^\\`]*(?:\\.[^\\`]*)*`/
 
