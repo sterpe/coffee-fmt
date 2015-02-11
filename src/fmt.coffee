@@ -4,6 +4,33 @@ OUTDENT		= "OUTDENT"
 TERMINATOR	= "TERMINATOR"
 HERECOMMENT	= "HERECOMMENT"
 COMMENT		= "COMMENT"
+IDENTIFIER	= "IDENTIFIER"
+NUMBER		= "NUMBER"
+STRING		= "STRING"
+PADDED_LR_TYPES	= [
+			"UNARY",
+			"LOGIC",
+			"SHIFT",
+			"COMPARE",
+			"COMPOUND_ASSIGN",
+			"MATH",
+			"RELATION",
+			"FORIN",
+			"FOROF",
+			"INSTANCEOF",
+			"UNLESS",
+			"IF",
+			"THEN",
+			"ELSE",
+			"OWN",
+			"WHEN",
+			"LEADING_WHEN",
+			"=",
+			"->",
+			"FOR",
+			"+",
+			"RETURN"
+]
 
 fmt = (code, options) ->
 	lexer		= new Lexer()
@@ -70,7 +97,9 @@ fmt = (code, options) ->
 				else
 					formatted_code = formatted_code.trim()
 					formatted_code += " "
-				formatted_code += "# "
+				formatted_code += "#"
+				if token[1].trim().charAt(0) isnt "!"
+					formatted_code += " "
 			if token[2].first_line > (CURR_LINE)
 				formatted_code += "\n" + CURR_INDENT
 				CURR_LINE = token[2].first_line
@@ -78,10 +107,13 @@ fmt = (code, options) ->
 				return
 			if token[0] is TERMINATOR
 				return
+			if token[0] is "PROGRAM"
+				return
 			for j in [0..comments.length - 1] by 1
 				do (j) ->
 					if comments[j].type is COMMENT
-						formatted_code += "# " + comments[j].text
+						formatted_code += "# "
+						formatted_code += comments[j].text
 						formatted_code += "\n" + CURR_INDENT
 					else if comments[j].type is HERECOMMENT
 						if comments[j].token.first_line is comments[j].token.last_line and
@@ -97,9 +129,43 @@ fmt = (code, options) ->
 								line.trim() + "\n" + CURR_INDENT
 						formatted_code += "###\n" + CURR_INDENT
 			comments = []
-			formatted_code += token[1]
-			if token.spaced
-				formatted_code += " "
+			tmp = ""
+			# Tokens that should always* have whitespace pads on left and right
+			if token[0] in PADDED_LR_TYPES
+				if not formatted_code.charAt(formatted_code.length - 1).match(/\s/)
+					tmp += " "
+				tmp += token[1]
+			else if token[0] in []
+				if not formatted_code.charAt(formatted_code.length - 1).match(/\s/)
+					tmp += " "
+				tmp += token[1]
+			else if token[0] is ","
+				if tokens[i - 1][0] is "IDENTIFIER" or tokens[i - 1][0] is "NUMBER"
+					formatted_code = formatted_code.trim()
+				tmp += token[1]
+			else if token[0] is "IDENTIFIER"
+				if tokens[i - 1][0] is "," or tokens[i - 1][0] is "IDENTIFIER" or
+						formatted_code.charAt(formatted_code.length - 1) is ")"
+					tmp += " "
+				tmp += token[1]
+			else if token[0] is "STRING"
+				if tokens[i - 1][0] is "," or tokens[i - 1][0] is "IDENTIFIER"
+					tmp += " "
+				tmp += token[1]
+			else if token[0] is "NUMBER"
+				if tokens[i - 1][0] is "," or tokens[i - 1][0] is "IDENTIFIER"
+					tmp += " "
+				tmp += token[1]
+			else if token[0] is ":"
+				if tokens[i - 1][0] is IDENTIFIER
+					tmp += token[1] + " "
+			else
+				tmp = token[1]
+			if tokens[i - 1][0] in PADDED_LR_TYPES
+				tmp = " " + tmp
+			if tokens[i - 1][0] is "," and tmp.charAt(0) isnt " "
+				tmp = " " + tmp
+			formatted_code += tmp
 
 	if true and
 	formatted_code.slice(-options.newLine.length) isnt options.newLine

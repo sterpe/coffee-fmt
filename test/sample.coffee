@@ -5,6 +5,7 @@ opposite =true
 
 # Conditions:
 number = -42 if opposite
+1 != 0
 
 # Functions:
 square = (x) -> x * x
