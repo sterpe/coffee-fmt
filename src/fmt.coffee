@@ -42,7 +42,7 @@ fmt = (code, options) ->
 #				formatted_code += "###" + token[1] + "###"
 				comments.push {
 					type: HERECOMMENT
-					text: token[1]
+					text: token[1].trim()
 				}
 				CURR_LINE = token[2].first_line
 				return
@@ -54,7 +54,7 @@ fmt = (code, options) ->
 				}
 				CURR_LINE = token[2].first_line
 				return
-			if token[2].first_line > CURR_LINE 
+			if token[2].first_line > (CURR_LINE)
 				formatted_code += "\n" + CURR_INDENT
 				CURR_LINE = token[2].first_line
 			if token.generated
@@ -66,8 +66,17 @@ fmt = (code, options) ->
 					if comments[j].type is COMMENT
 						formatted_code += "# " + comments[j].text
 						formatted_code += "\n" + CURR_INDENT
+					else if comments[j].type is HERECOMMENT
+						formatted_code += "###\n" + CURR_INDENT
+						tmp = comments[j].text.split("\n")
+						tmp.forEach (line) ->
+							formatted_code += CURR_INDENT +
+								line + "\n" + CURR_INDENT
+						formatted_code += "###\n" + CURR_INDENT
 			comments = []
 			formatted_code += token[1]
+			if token.spaced
+				formatted_code += " "
 
 	if true and
 	formatted_code.slice(-options.newLine.length) isnt options.newLine
