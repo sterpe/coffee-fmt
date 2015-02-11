@@ -39,21 +39,38 @@ fmt = (code, options) ->
 			if token[0] is INDENT or token[0] is OUTDENT
 					return
 			if token[0] is HERECOMMENT
-#				formatted_code += "###" + token[1] + "###"
-				comments.push {
-					type: HERECOMMENT
-					text: token[1].trim()
-				}
-				CURR_LINE = token[2].first_line
-				return
+				if tokens[i - 1][1] is "\n" or token[2].first_line isnt token[2].last_line
+					comments.push {
+						type: HERECOMMENT
+						text: token[1].trim()
+						token: token
+						index: i
+					}
+					CURR_LINE = token[2].first_line
+					return
+				else if formatted_code.length and not (formatted_code.charAt(formatted_code.length - 1).match(/\s/))
+					formatted_code += " "
+				else
+					formatted_code = formatted_code.trim()
+					formatted_code += " "
+				formatted_code += "### "
+				token[1] = token[1].trim() + " ###"
 			if token[0] is COMMENT
-#				formatted_code += "# " + token[1]
-				comments.push {
-					type: COMMENT
-					text: token[1]
-				}
-				CURR_LINE = token[2].first_line
-				return
+				if tokens[i - 1][1] is "\n"
+					comments.push {
+						type: COMMENT
+						text: token[1]
+						token: token
+						index: i
+					}
+					CURR_LINE = token[2].first_line
+					return
+				else if formatted_code.length and not (formatted_code.charAt(formatted_code.length - 1).match(/\s/))
+					formatted_code += " "
+				else
+					formatted_code = formatted_code.trim()
+					formatted_code += " "
+				formatted_code += "# "
 			if token[2].first_line > (CURR_LINE)
 				formatted_code += "\n" + CURR_INDENT
 				CURR_LINE = token[2].first_line
@@ -67,11 +84,17 @@ fmt = (code, options) ->
 						formatted_code += "# " + comments[j].text
 						formatted_code += "\n" + CURR_INDENT
 					else if comments[j].type is HERECOMMENT
+						if comments[j].token.first_line is comments[j].token.last_line and
+								comments[j].token.first_line is tokens[comments[j].index - 1].last_line and
+								tokens[comments[j].index - 1][1] isnt "\n"
+							formatted_code = formatted_code.slice(0, formatted_code.lastIndexOf("\n"))
+						if formatted_code.length and not (formatted_code.charAt(formatted_code.length - 1).match(/\s/))
+							formatted_code += " "
 						formatted_code += "###\n" + CURR_INDENT
 						tmp = comments[j].text.split("\n")
 						tmp.forEach (line) ->
 							formatted_code += CURR_INDENT +
-								line + "\n" + CURR_INDENT
+								line.trim() + "\n" + CURR_INDENT
 						formatted_code += "###\n" + CURR_INDENT
 			comments = []
 			formatted_code += token[1]

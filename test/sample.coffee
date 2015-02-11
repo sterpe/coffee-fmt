@@ -1,6 +1,7 @@
+x = 1 # Test
 # Assignment:
 number   = 42
-opposite = true
+opposite =true
 
 # Conditions:
 number = -42 if opposite
@@ -9,13 +10,14 @@ number = -42 if opposite
 square = (x) -> x * x
 
 # Arrays:
-list = [1, 2, 3, 4, 5]
+list = [1, 2, 3, 4, 5];		# Test 2
 
 # Objects:
 math =
-  root:   Math.sqrt
-  square: square
-  cube:   (x) -> x * square x
+  root:   Math.sqrt# Foo
+  square: square			### BAZ
+		BIM BOP ###
+  cube:   (x) -> x * square x### Bar ###
 
 # Splats:
 race = (winner, runners...) ->
