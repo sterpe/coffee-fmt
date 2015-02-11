@@ -242,7 +242,8 @@ exports.Lexer = class Lexer
         here = here.replace /// \n #{repeat ' ', @indent} ///g, '\n'
       @token 'HERECOMMENT', here, 0, comment.length
     else
-      comment_text = comment.match /^[\n\S]*#[^\n\S]*([^\n]*)/
+      comment_text = comment.match /^[^\n\S]*#[^\n\S]*([^\n]*)/
+      console.log("XXX--" + comment + "--XXX", comment_text);
       comment_text = comment_text[1]
       @token "COMMENT", comment_text, 0, comment_text.length
     comment.length
@@ -689,7 +690,13 @@ exports.Lexer = class Lexer
       @error "octal escape sequences are not allowed #{match[2]}", match.index + match[1].length + 1
     quote + body + quote
 
+  ###
+       BAR
+  ###
   # Throws a compiler error on the current position.
+  ###
+     FOO
+  ###
   error: (message, offset = 0) ->
     # TODO: Are there some cases we could improve the error line number by
     # passing the offset in the chunk where the error happened?
