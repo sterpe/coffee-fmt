@@ -12,6 +12,7 @@ fmt = (code, options) ->
 	CURR_INDENT	= ""
 	CURR_LINE	= 0
 	INDENT_SIZE	= options.tab.length
+	comments	= []
 
 	tokens.unshift [
 		'PROGRAM',
@@ -37,6 +38,22 @@ fmt = (code, options) ->
 			console.log("CURR_INDENT IS:" + CURR_INDENT.length);
 			if token[0] is INDENT or token[0] is OUTDENT
 					return
+			if token[0] is HERECOMMENT
+#				formatted_code += "###" + token[1] + "###"
+				comments.push {
+					type: HERECOMMENT
+					text: token[1]
+				}
+				CURR_LINE = token[2].first_line
+				return
+			if token[0] is COMMENT
+#				formatted_code += "# " + token[1]
+				comments.push {
+					type: COMMENT
+					text: token[1]
+				}
+				CURR_LINE = token[2].first_line
+				return
 			if token[2].first_line > CURR_LINE 
 				formatted_code += "\n" + CURR_INDENT
 				CURR_LINE = token[2].first_line
@@ -44,12 +61,12 @@ fmt = (code, options) ->
 				return
 			if token[0] is TERMINATOR
 				return
-			if token[0] is HERECOMMENT
-				formatted_code += "###" + token[1] + "###"
-				return
-			if token[0] is COMMENT
-				formatted_code += "# " + token[1]
-				return
+			for j in [0..comments.length - 1] by 1
+				do (j) ->
+					if comments[j].type is COMMENT
+						formatted_code += "# " + comments[j].text
+						formatted_code += "\n" + CURR_INDENT
+			comments = []
 			formatted_code += token[1]
 
 	if true and
