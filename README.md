@@ -5,7 +5,10 @@ a `gofmt` inspired Coffeescript formatter/beautifier.
 
 
 	npm install -g coffee-fmt
-	coffee-fmt --indent_style [space|tab] --indent_size [Integer, ignored when using tabs] -i filename.coffee >> transformed.coffee
+
+	coffee-fmt --indent_style [space|tab] \
+		 --indent_size [Integer, ignored when using tabs] \
+		 -i filename.coffee >> transformed.coffee
 
 
 ###js api###
