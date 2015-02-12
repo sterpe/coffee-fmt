@@ -73,6 +73,7 @@ exports.Lexer = class Lexer
       return {@tokens, index: i} if opts.untilBalanced and @ends.length is 0
 
     @closeIndentation()
+    console.log(end);
     throwSyntaxError "missing #{end.tag}", end.origin[2] if end = @ends.pop()
     return @tokens if opts.rewrite is off
     (new Rewriter).rewrite @tokens
@@ -470,6 +471,7 @@ exports.Lexer = class Lexer
 
   # Close up all remaining open blocks at the end of the file.
   closeIndentation: ->
+    console.log "CLOSE_INDENTATION", @indent
     @outdentToken @indent
 
   # Match the contents of a delimited token and expand variables and expressions

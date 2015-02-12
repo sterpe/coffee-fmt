@@ -28,8 +28,13 @@ PADDED_LR_TYPES	= [
 			"=",
 			"->",
 			"FOR",
+			"BY",
+			"RETURN",
+			"THROW",
+			"WHILE",
+			"SWITCH",
 			"+",
-			"RETURN"
+			"-"
 ]
 
 fmt = (code, options) ->
@@ -53,7 +58,7 @@ fmt = (code, options) ->
 
 	for i in [0..tokens.length - 1] by 1 
 		do (i) ->
-			console.log tokens[i], i
+#			console.log tokens[i], i
 #			FOO BAR BAZ BEEP BOOP XXX XXX XXX ABCDEFGHIJKLMNOPQRSTUVWXZY 01234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ 01234567890
 			token = tokens[i]
 			CURR_INDENT = if token[0] is INDENT
@@ -62,7 +67,7 @@ fmt = (code, options) ->
 				CURR_INDENT.slice(0, -INDENT_SIZE)
 			else
 				CURR_INDENT
-			console.log("CURR_INDENT IS:" + CURR_INDENT.length);
+#			console.log("CURR_INDENT IS:" + CURR_INDENT.length);
 			if token[0] is INDENT or token[0] is OUTDENT
 					return
 			if token[0] is HERECOMMENT
@@ -134,8 +139,23 @@ fmt = (code, options) ->
 			if token[0] in PADDED_LR_TYPES
 				if not formatted_code.charAt(formatted_code.length - 1).match(/\s/)
 					tmp += " "
-				tmp += token[1]
-			else if token[0] in []
+				if token[1] is "=="
+					tmp += "is"
+				else if token[1] is "!="
+					tmp += "isnt"
+				else if token[1] is "!"
+					tmp += "not"
+				else if token[1] is "&&"
+					tmp += "and"
+				else if token[1] is "||"
+					tmp += "or"
+				else if token[1] is "||="
+					tmp += "or="
+				else if token[1] is "&&="
+					tmp += "and="
+				else
+					tmp += token[1]
+			else if token[0] in ["@"]
 				if not formatted_code.charAt(formatted_code.length - 1).match(/\s/)
 					tmp += " "
 				tmp += token[1]
@@ -162,7 +182,9 @@ fmt = (code, options) ->
 			else
 				tmp = token[1]
 			if tokens[i - 1][0] in PADDED_LR_TYPES
-				tmp = " " + tmp
+				if not formatted_code.charAt(formatted_code.length - 1).match(/\s/) and
+				not tmp.charAt(0).match(/\s/)
+					tmp = " " + tmp
 			if tokens[i - 1][0] is "," and tmp.charAt(0) isnt " "
 				tmp = " " + tmp
 			formatted_code += tmp
