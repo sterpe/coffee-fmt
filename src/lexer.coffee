@@ -212,22 +212,22 @@ exports.Lexer = class Lexer
         attempt = match[1]
         indent = attempt if indent is null or 0 < attempt.length < indent.length
       indentRegex = /// ^#{indent} ///gm if indent
-      @mergeInterpolationTokens tokens, {quote: quote[0], start, end}, (value, i) =>
-        value = @formatString value
-        value = value.replace LEADING_BLANK_LINE,  '' if i is 0
-        value = value.replace TRAILING_BLANK_LINE, '' if i is $
-        value = value.replace indentRegex, ''
-        value = value.replace MULTILINER, '\\n'
+      @mergeInterpolationTokens tokens, {quote, start, end}, (value, i) =>
+#        value = @formatString value
+#        value = value.replace LEADING_BLANK_LINE,  '' if i is 0
+#        value = value.replace TRAILING_BLANK_LINE, '' if i is $
+#        value = value.replace indentRegex, ''
+#        value = value.replace MULTILINER, '\\n'
         value
     else
       @mergeInterpolationTokens tokens, {quote, start, end}, (value, i) =>
-        value = @formatString value
-        value = value.replace STRING_OMIT, (match, offset) ->
-          if (i is 0 and offset is 0) or
-             (i is $ and offset + match.length is value.length)
-            ''
-          else
-            ' '
+#        value = @formatString value
+#        value = value.replace STRING_OMIT, (match, offset) ->
+#          if (i is 0 and offset is 0) or
+#             (i is $ and offset + match.length is value.length)
+#            ''
+#          else
+#            ' '
         value
 
     end
@@ -793,9 +793,11 @@ JSTOKEN    = /^`[^\\`]*(?:\\.[^\\`]*)*`/
 STRING_START   = /^(?:'''|"""|'|")/
 
 STRING_SINGLE  = /// ^(?: [^\\']  | \\[\s\S]                      )* ///
-STRING_DOUBLE  = /// ^(?: [^\\"#] | \\[\s\S] |           \#(?!\{) )* ///
+STRING_DOUBLE  = /// ^(?: [^\\"]  | \\[\s\S]                      )* ///
+# STRING_DOUBLE  = /// ^(?: [^\\"#] | \\[\s\S] |           \#(?!\{) )* ///
+HEREDOC_DOUBLE = /// ^(?: [^\\"]  | \\[\s\S] | "(?!"")            )* ///
 HEREDOC_SINGLE = /// ^(?: [^\\']  | \\[\s\S] | '(?!'')            )* ///
-HEREDOC_DOUBLE = /// ^(?: [^\\"#] | \\[\s\S] | "(?!"") | \#(?!\{) )* ///
+# HEREDOC_DOUBLE = /// ^(?: [^\\"#] | \\[\s\S] | "(?!"") | \#(?!\{) )* ///
 
 STRING_OMIT    = /\s*\n\s*/g
 HEREDOC_INDENT = /\n+([^\n\S]*)(?=\S)/g
