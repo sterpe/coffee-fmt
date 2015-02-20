@@ -39,7 +39,7 @@ PADDED_LR_TYPES	= [
 
 fmt = (code, options) ->
 	lexer		= new Lexer()
-	tokens 		= lexer.tokenize code, { rewrite: false }
+	tokens 		= lexer.tokenize code, { rewrite: false, verbose: options.verbose }
 	formatted_code	= ""
 	CURR_INDENT	= ""
 	CURR_LINE	= 0
