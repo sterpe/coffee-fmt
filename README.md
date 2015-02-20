@@ -21,8 +21,8 @@ a `gofmt` inspired Coffeescript formatter/beautifier.
 	;
 
 	options = {
-		indent_style: space,
-		indent_size: 7 /* Or whatever */
+		tab: '\t',
+		newLine: '\n'
 	};
 
 	coffee = fs.readFileSync('filename.coffee');
