@@ -34,6 +34,7 @@ exports.Lexer = class Lexer
   #
   # Before returning the token stream, run it through the [Rewriter](rewriter.html).
   tokenize: (code, opts = {}) ->
+    @verbose    = opts.verbose   # Should we log to console?
     @literate   = opts.literate  # Are we lexing literate CoffeeScript?
     @indent     = 0              # The current indentation level.
     @baseIndent = 0              # The overall minimum indentation level
@@ -73,7 +74,7 @@ exports.Lexer = class Lexer
       return {@tokens, index: i} if opts.untilBalanced and @ends.length is 0
 
     @closeIndentation()
-    console.log(end);
+    console.log(end) if @verbose
     throwSyntaxError "missing #{end.tag}", end.origin[2] if end = @ends.pop()
     return @tokens if opts.rewrite is off
     (new Rewriter).rewrite @tokens
@@ -244,7 +245,7 @@ exports.Lexer = class Lexer
       @token 'HERECOMMENT', here, 0, comment.length
     else
       comment_text = comment.match /^[^\n\S]*#[^\n\S]*([^\n]*)/
-      console.log("XXX--" + comment + "--XXX", comment_text);
+      console.log("XXX--" + comment + "--XXX", comment_text) if @verbose
       comment_text = comment_text[1]
       @token "COMMENT", comment_text, 0, comment_text.length
     comment.length
@@ -313,9 +314,12 @@ exports.Lexer = class Lexer
   lineToken: ->
     return 0 unless match = MULTI_DENT.exec @chunk
     indent = match[0]
-    console.log "@indent ", @indent
-    console.log "INDENT", indent, indent.length
-    console.log "CHUNK SLICE HERE: ", @chunk.slice(0, 50)
+
+    if @verbose
+      console.log "@indent ", @indent
+      console.log "INDENT", indent, indent.length
+      console.log "CHUNK SLICE HERE: ", @chunk.slice(0, 50)
+
     if @chunk.charAt(indent.length) is "#"
       @newlineToken 0
       return 1
@@ -471,7 +475,7 @@ exports.Lexer = class Lexer
 
   # Close up all remaining open blocks at the end of the file.
   closeIndentation: ->
-    console.log "CLOSE_INDENTATION", @indent
+    console.log("CLOSE_INDENTATION", @indent) if @verbose
     @outdentToken @indent
 
   # Match the contents of a delimited token and expand variables and expressions
@@ -511,7 +515,7 @@ exports.Lexer = class Lexer
       # The `1`s are to remove the `#` in `#{`.
       [line, column] = @getLineAndColumnFromChunk offsetInChunk + 1
       {tokens: nested, index} =
-        new Lexer().tokenize str[1..], line: line, column: column, untilBalanced: on
+        new Lexer().tokenize str[1..], line: line, column: column, untilBalanced: on, verbose: @verbose
       # Skip the trailing `}`.
       index += 1
 
