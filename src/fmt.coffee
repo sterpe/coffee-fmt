@@ -88,7 +88,7 @@ fmt = (code, options) ->
 				formatted_code += "### "
 				token[1] = token[1].trim() + " ###"
 			if token[0] is COMMENT
-				if tokens[i - 1][1] is "\n"
+				if token[1][0] is "\n"
 					comments.push {
 						type: COMMENT
 						text: token[1]
@@ -102,7 +102,6 @@ fmt = (code, options) ->
 				else
 					formatted_code = formatted_code.trim()
 					formatted_code += " "
-				formatted_code += "#"
 				if token[1].trim().charAt(0) isnt "!"
 					formatted_code += " "
 			if token[2].first_line > (CURR_LINE)
@@ -114,12 +113,18 @@ fmt = (code, options) ->
 				return
 			if token[0] is "PROGRAM"
 				return
+#			console.log(comments)
 			for j in [0..comments.length - 1] by 1
 				do (j) ->
+#					console.log ("$" + comments[j].text + "$")
 					if comments[j].type is COMMENT
-						formatted_code += "# "
-						formatted_code += comments[j].text
-						formatted_code += "\n" + CURR_INDENT
+						tmp = comments[j].text.split("\n")
+						tmp.forEach (line) ->
+							text = line.split("#");
+							text = text[1] or text[0];
+							if text.trim()
+								formatted_code += "# " + text.trim()
+								formatted_code += "\n" + CURR_INDENT
 					else if comments[j].type is HERECOMMENT
 						if comments[j].token.first_line is comments[j].token.last_line and
 								comments[j].token.first_line is tokens[comments[j].index - 1].last_line and
@@ -187,6 +192,7 @@ fmt = (code, options) ->
 					tmp = " " + tmp
 			if tokens[i - 1][0] is "," and tmp.charAt(0) isnt " "
 				tmp = " " + tmp
+#			console.log "tmp ", tmp
 			formatted_code += tmp
 
 	if true and

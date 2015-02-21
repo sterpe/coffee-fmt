@@ -15,6 +15,7 @@ LINEBREAK	=
 options		= 
 	tab: if argv.indent_style is "space" then SPACE else TAB
 	newLine: LINEBREAK[argv.new_line] or LF
+	verbose: true
 
 options.tab += (SPACE for i in [2..argv.indent_size]).join ""
 
