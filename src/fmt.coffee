@@ -1,3 +1,9 @@
+###
+# Just nobody look
+# at this, what a disaster!
+# I blame Coffeescript.
+###
+
 {Lexer}		= require('./lexer')
 INDENT		= "INDENT"
 OUTDENT		= "OUTDENT"
