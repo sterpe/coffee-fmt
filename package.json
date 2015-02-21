@@ -1,6 +1,6 @@
 {
 	"name": "coffee-fmt",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"description": "a `gofmt` inspired Coffeescript formatter/beautifier.",
 	"author": {
 		"name": "Steven R. Terpe",

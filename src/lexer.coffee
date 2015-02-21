@@ -572,7 +572,8 @@ exports.Lexer = class Lexer
           if i is 2 and firstEmptyStringIndex?
             @tokens.splice firstEmptyStringIndex, 2 # Remove empty string and the plus.
           token[0] = 'STRING'
-          token[1] = @makeDelimitedLiteral converted, options
+          token[1] = "#{options.delimiter}#{converted}#{options.delimiter}"
+#          token[1] = @makeDelimitedLiteral converted, options
           locationToken = token
           tokensToPush = [token]
       if @tokens.length > firstIndex
