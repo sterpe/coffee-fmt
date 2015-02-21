@@ -204,7 +204,7 @@ exports.Lexer = class Lexer
     {tokens, index: end} = @matchWithInterpolations regex, quote
     $ = tokens.length - 1
 
-    delimiter = quote[0]
+    delimiter = quote #[0]
     if heredoc
       # Find the smallest indentation. It will be removed from all lines later.
       indent = null
@@ -214,20 +214,20 @@ exports.Lexer = class Lexer
         indent = attempt if indent is null or 0 < attempt.length < indent.length
       indentRegex = /// ^#{indent} ///gm if indent
       @mergeInterpolationTokens tokens, {delimiter}, (value, i) =>
-        value = @formatString value
-        value = value.replace LEADING_BLANK_LINE,  '' if i is 0
-        value = value.replace TRAILING_BLANK_LINE, '' if i is $
-        value = value.replace indentRegex, ''
+#        value = @formatString value
+#        value = value.replace LEADING_BLANK_LINE,  '' if i is 0
+#        value = value.replace TRAILING_BLANK_LINE, '' if i is $
+#        value = value.replace indentRegex, ''
         value
     else
       @mergeInterpolationTokens tokens, {delimiter}, (value, i) =>
-        value = @formatString value
-        value = value.replace SIMPLE_STRING_OMIT, (match, offset) ->
-          if (i is 0 and offset is 0) or
-             (i is $ and offset + match.length is value.length)
-            ''
-          else
-            ' '
+#        value = @formatString value
+#        value = value.replace SIMPLE_STRING_OMIT, (match, offset) ->
+#          if (i is 0 and offset is 0) or
+#             (i is $ and offset + match.length is value.length)
+#            ''
+#          else
+#            ' '
         value
 
     end
