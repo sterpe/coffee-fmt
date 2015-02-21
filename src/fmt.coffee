@@ -136,13 +136,26 @@ fmt = (code, options) ->
 							if formatted_code.slice(-2) != "\n\n"
 								formatted_code += "\n" + CURR_INDENT
 						bool = false
-						tmp.forEach (line) ->
+						lastLineWasBlank = false
+						tmp.forEach (line, index) ->
 							text = line.split("#");
 							text = text[1] or text[0];
 							bool = bool or text.trim()
 							if bool
-								formatted_code += "# " + text.trim()
-								formatted_code += "\n" + CURR_INDENT
+								isBlankLine = not text.trim()
+								if lastLineWasBlank and isBlankLine
+									formatted_code = formatted_code.slice(0, formatted_code.lastIndexOf("\n"))
+									formatted_code = formatted_code.slice(0, formatted_code.lastIndexOf("\n")+1)
+								if true
+									formatted_code += "# " + text.trim()
+									formatted_code += "\n" + CURR_INDENT
+								else 
+									formatted_code += "\n" + CURR_INDENT
+								lastLineWasBlank = isBlankLine
+						if lastLineWasBlank
+							formatted_code = formatted_code.slice(0, formatted_code.lastIndexOf("\n"))
+							formatted_code = formatted_code.slice(0, formatted_code.lastIndexOf("\n")+1)
+							formatted_code += CURR_INDENT
 					else if comments[j].type is HERECOMMENT
 						if comments[j].token.first_line is comments[j].token.last_line and
 								comments[j].token.first_line is tokens[comments[j].index - 1].last_line and
