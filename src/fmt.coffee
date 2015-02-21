@@ -34,6 +34,7 @@ PADDED_LR_TYPES	= [
 			"WHILE",
 			"SWITCH",
 			"+",
+			"CLASS"
 			"-"
 ]
 
@@ -88,7 +89,18 @@ fmt = (code, options) ->
 				formatted_code += "### "
 				token[1] = token[1].trim() + " ###"
 			if token[0] is COMMENT
-				if token[1][0] is "\n"
+#				if token[1][0] is "\n"
+				if true
+					if (token[1].split("#")[0].indexOf("\n") is -1) and formatted_code.length
+						console.log true
+						inline = token[1].split("\n").shift()
+						if formatted_code.length and not (formatted_code.charAt(formatted_code.length - 1).match(/\s/))
+							formatted_code += " "
+						else
+							formatted_code = formatted_code.trim()
+							formatted_code += " "
+						formatted_code += inline.trim().replace(/^#(\s)*/, "# ")
+						token[1] = token[1].split("\n").slice(1).join("\n")
 					comments.push {
 						type: COMMENT
 						text: token[1]
@@ -97,13 +109,6 @@ fmt = (code, options) ->
 					}
 					CURR_LINE = token[2].first_line
 					return
-				else if formatted_code.length and not (formatted_code.charAt(formatted_code.length - 1).match(/\s/))
-					formatted_code += " "
-				else
-					formatted_code = formatted_code.trim()
-					formatted_code += " "
-				if token[1].trim().charAt(0) isnt "!"
-					formatted_code += " "
 			if token[2].first_line > (CURR_LINE)
 				formatted_code += "\n" + CURR_INDENT
 				CURR_LINE = token[2].first_line
@@ -116,13 +121,20 @@ fmt = (code, options) ->
 #			console.log(comments)
 			for j in [0..comments.length - 1] by 1
 				do (j) ->
-#					console.log ("$" + comments[j].text + "$")
+					console.log ("$" + comments[j].text + "$")
+					if comments[j].text.length is 0
+						return
 					if comments[j].type is COMMENT
 						tmp = comments[j].text.split("\n")
+						if (tmp.length)
+							if formatted_code.slice(-2) != "\n\n"
+								formatted_code += "\n" + CURR_INDENT
+						bool = false
 						tmp.forEach (line) ->
 							text = line.split("#");
 							text = text[1] or text[0];
-							if text.trim()
+							bool = bool or text.trim()
+							if bool
 								formatted_code += "# " + text.trim()
 								formatted_code += "\n" + CURR_INDENT
 					else if comments[j].type is HERECOMMENT
@@ -192,7 +204,7 @@ fmt = (code, options) ->
 					tmp = " " + tmp
 			if tokens[i - 1][0] is "," and tmp.charAt(0) isnt " "
 				tmp = " " + tmp
-#			console.log "tmp ", tmp
+			console.log "tmp ", tmp
 			formatted_code += tmp
 
 	if true and
