@@ -1,6 +1,6 @@
 ###
-# Just nobody look
-# at this, what a disaster!
+# Just nobody look.
+# At this, what a disaster!
 # I blame Coffeescript.
 ###
 
