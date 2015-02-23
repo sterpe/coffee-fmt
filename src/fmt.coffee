@@ -36,11 +36,14 @@ PADDED_LR_TYPES	= [
 			"FOR",
 			"BY",
 			"RETURN",
+			"UNDEFINED"
+			"NULL"
 			"THROW",
 			"WHILE",
 			"SWITCH",
 			"+",
 			"CLASS"
+			":"
 			"-"
 ]
 
@@ -212,9 +215,9 @@ fmt = (code, options) ->
 				if tokens[i - 1][0] is "," or tokens[i - 1][0] is "IDENTIFIER"
 					tmp += " "
 				tmp += token[1]
-			else if token[0] is ":"
-				if tokens[i - 1][0] is IDENTIFIER
-					tmp += token[1] + " "
+#			else if token[0] is ":"
+#				if tokens[i - 1][0] is IDENTIFIER or tokens[i - 1][0] is STRING
+#					tmp += token[1] + " "
 			else
 				tmp = token[1]
 			if tokens[i - 1][0] in PADDED_LR_TYPES

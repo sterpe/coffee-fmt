@@ -1,47 +1,48 @@
 {
-	"name": "coffee-fmt",
-	"version": "0.6.2",
-	"description": "a `gofmt` inspired Coffeescript formatter/beautifier.",
-	"author": {
-		"name": "Steven R. Terpe",
-		"email": "srterpe@gmail.com",
-		"url": "https://github.com/sterpe"
-	},
-	"main": "./lib/fmt.js",
-	"bin": {
-		"coffee-fmt": "./lib/cmd.js"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"dependencies": {
-		"minimist": "~1.1.0"
-	},
-	"devDependencies": {
-		"rimraf": "^2.2.8",
-		"mkdirp": "^0.5.0",
-		"gulp-util": "^3.0.3",
-		"gulp-coffee": "^2.3.1",
-		"gulp": "^3.8.10"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sterpe/coffee-fmt.git"
-	},
-	"keywords": [
-		"coffee",
-		"coffeescript",
-		"fmt",
-		"gofmt",
-		"format",
-		"formatter",
-		"beautify",
-		"beautifier",
-		"coffee-beautify",
-		"autoformat"
-	],
-	"bugs": {
-		"url": "https://github.com/sterpe/coffee-fmt/issues"
-	},
-	"license": "MIT"
+  "name": "coffee-fmt",
+  "version": "0.6.3",
+  "description": "a `gofmt` inspired Coffeescript formatter/beautifier.",
+  "author": {
+    "name": "Steven R. Terpe",
+    "email": "srterpe@gmail.com",
+    "url": "https://github.com/sterpe"
+  },
+  "main": "./lib/fmt.js",
+  "bin": {
+    "coffee-fmt": "./lib/cmd.js"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/tape ./test/tape/*"
+  },
+  "dependencies": {
+    "minimist": "~1.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-coffee": "^2.3.1",
+    "gulp-util": "^3.0.3",
+    "mkdirp": "^0.5.0",
+    "rimraf": "^2.2.8",
+    "tape": "^3.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sterpe/coffee-fmt.git"
+  },
+  "keywords": [
+    "coffee",
+    "coffeescript",
+    "fmt",
+    "gofmt",
+    "format",
+    "formatter",
+    "beautify",
+    "beautifier",
+    "coffee-beautify",
+    "autoformat"
+  ],
+  "bugs": {
+    "url": "https://github.com/sterpe/coffee-fmt/issues"
+  },
+  "license": "MIT"
 }
