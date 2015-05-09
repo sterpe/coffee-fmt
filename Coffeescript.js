@@ -1,15 +1,9 @@
 var FrontendFactory = require('./frontend/FrontendFactory')
 , BackendFactory = require('./backend/BackendFactory')
 , Source = require('./frontend/Source').Source
-, SOURCE_LINE = require('./frontend/Constants').get("SOURCE_LINE")
-, SOURCE_LINE_FORMAT = require('./frontend/Constants').get("SOURCE_LINE_FORMAT")
-, PARSER_SUMMARY = require('./frontend/Constants').get("PARSER_SUMMARY")
-, PARSER_SUMMARY_FORMAT = require('./frontend/Constants').get("PARSER_SUMMARY_FORMAT")
-, COMPILER_SUMMARY = require('./frontend/Constants').get("COMPILER_SUMMARY")
-, COMPILER_SUMMARY_FORMAT = require('./frontend/Constants').get("COMPILER_SUMMARY_FORMAT")
-, INTERPRETER_SUMMARY = require('./frontend/Constants').get("INTERPRETER_SUMMARY")
-, INTERPRETER_SUMMARY_FORMAT = require('./frontend/Constants').get("INTERPRETER_SUMMARY_FORMAT")
-, sprintf = require('sprintf-js').sprintf
+, MESSAGES = require('./constants/MessageTypes')
+, FORMATS = require('./constants/Formats')
+, printf = require('./utils/printf').printf
 , onSourceMessage
 , onParserMessage
 , onBackendMessage
@@ -17,11 +11,11 @@ var FrontendFactory = require('./frontend/FrontendFactory')
 
 onSourceMessage = function (message) {
 	switch (message.type) {
-		case SOURCE_LINE:
-			console.log(sprintf(SOURCE_LINE_FORMAT
+		case MESSAGES.get("SOURCE_LINE"):
+			printf(FORMATS.get("SOURCE_LINE_FORMAT")
 				, message.arguments[0]
 				, message.arguments[1]
-			));
+			);
 			break;
 		default:
 			return;
@@ -29,13 +23,34 @@ onSourceMessage = function (message) {
 };
 
 onParserMessage = function (message) {
+	var tokenValue
+	;
 	switch (message.type) {
-		case PARSER_SUMMARY:
-			console.log(sprintf(PARSER_SUMMARY_FORMAT
+		case MESSAGES.get("PARSER_SUMMARY"):
+			printf(FORMATS.get("PARSER_SUMMARY_FORMAT")
 				, message.arguments[0]
 				, message.arguments[1]
 				, message.arguments[2]
-			));
+			);
+			break;
+		case MESSAGES.get("TOKEN"):
+			printf(FORMATS.get("TOKEN_FORMAT")
+				, message.arguments[2]
+				, message.arguments[0]
+				, message.arguments[1]
+				, message.arguments[3]
+			);
+			tokenValue = message.arguments[4];
+			if (tokenValue !== null) {
+				if (token.type === TOKEN_TYPES.get("STRING")) {
+					tokenValue = "\"" + tokenValue + "\"";
+				}
+				printf(FORMATS.get("VALUE_FORMAT")
+					, tokenValue
+				);
+			}
+			break;
+		case MESSAGES.get("SYNTAX_ERROR"):
 			break;
 		default:
 			return;
@@ -43,18 +58,18 @@ onParserMessage = function (message) {
 };
 onBackendMessage = function (message) {
 	switch (message.type) {
-		case INTERPRETER_SUMMARY:
-			console.log(sprintf(INTERPRETER_SUMMARY_FORMAT
+		case MESSAGES.get("INTERPRETER_SUMMARY"):
+			printf(FORMATS.get("INTERPRETER_SUMMARY_FORMAT")
 				, message.arguments[0]
 				, message.arguments[1]
 				, message.arguments[2]
-			));
+			);
 			break;
-		case COMPILER_SUMMARY:
-			console.log(sprintf(COMPILER_SUMMARY_FORMAT
+		case MESSAGES.get("COMPILER_SUMMARY"):
+			printf(FORMATS.get("COMPILER_SUMMARY_FORMAT")
 				, message.arguments[0]
 				, message.arguments[1]
-			));
+			);
 			break;
 		default:
 			return;

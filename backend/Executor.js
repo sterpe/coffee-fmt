@@ -5,7 +5,7 @@
 
 var Backend = require('./Backend').Backend
 , _ = require('lodash')
-, INTERPRETER_SUMMARY = require('../frontend/Constants').get("INTERPRETER_SUMMARY")
+, INTERPRETER_SUMMARY = require('../constants/MessageTypes').get("INTERPRETER_SUMMARY")
 , process
 ;
 

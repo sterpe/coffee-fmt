@@ -5,8 +5,11 @@
  */
 
 var Parser = require('../Parser').Parser
-, PARSER_SUMMARY = require('../Constants').get("PARSER_SUMMARY")
-, EOF = require('../Constants').get("TYPE_EOF")
+, errorHandler = require('./CoffeeErrorHandler')
+, MESSAGE_TYPES = require('../../constants/MessageTypes')
+, TOKEN_TYPES = require('../../constants/TokenTypes')
+, END_OF_FILE = TOKEN_TYPES.get("END_OF_FILE")
+, ERROR = TOKEN_TYPES.get("ERROR")
 , _ = require('lodash')
 , parse
 , getErrorCount
@@ -21,13 +24,27 @@ parse = function () {
 	, startTime = new Date().valueOf()
 	;
 
-	while (token.type !== EOF) {
+	while (token.type !== END_OF_FILE) {
+		if (token.type !== ERROR) {
+			this.sendMessage({
+				type: MESSAGE_TYPES.get("TOKEN")
+				, arguments: [
+					token.lineNum
+					, token.position
+					, token.type
+					, token.text
+					, token.value
+				]
+			});
+		} else {
+			errorHandler.flag(token, token.value, this);
+		}
 		token = this.nextToken();
 	}
 
 	elapsedTime = (new Date().valueOf() - startTime)/1000;
 	this.sendMessage({
-		type: PARSER_SUMMARY
+		type: MESSAGE_TYPES.get("PARSER_SUMMARY")
 		, arguments: [
 			token.lineNum
 			, this.getErrorCount()

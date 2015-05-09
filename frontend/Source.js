@@ -1,6 +1,6 @@
 var EOL = require('./Constants').get("EOL")
 , EOF = require('./Constants').get("EOF")
-, SOURCE_LINE = require('./Constants').get("SOURCE_LINE")
+, SOURCE_LINE = require('../constants/MessageTypes').get("SOURCE_LINE")
 , EventEmitter = require('events').EventEmitter
 , _ = require('lodash')
 , currentChar

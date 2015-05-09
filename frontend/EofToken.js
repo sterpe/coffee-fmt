@@ -6,7 +6,7 @@
 
 var Token = require('./Token').Token
 , _ = require('lodash')
-, EOF = require('./Constants').get("TYPE_EOF")
+, END_OF_FILE = require('../constants/TokenTypes').get("END_OF_FILE")
 , extract
 ;
 
@@ -25,6 +25,6 @@ extract = function () {
 exports.EofToken = function (source) {
 	return _.extend(Token(source), {
 		extract: extract
-		, type: EOF
+		, type: END_OF_FILE
 	});
 };

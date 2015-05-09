@@ -5,7 +5,7 @@
 
 var Backend = require('./Backend').Backend
 , _ = require('lodash')
-, COMPILER_SUMMARY = require('../frontend/Constants').get("COMPILER_SUMMARY")
+, COMPILER_SUMMARY = require('../constants/MessageTypes').get("COMPILER_SUMMARY")
 , process
 ;
 
