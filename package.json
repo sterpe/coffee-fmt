@@ -1,0 +1,29 @@
+{
+  "name": "wci",
+  "version": "0.1.0",
+  "description": "Writing Compilers and Interpreters, Ron Mak",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steven Terpe <srterpe@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "^3.7.2",
+    "lodash": "^3.8.0",
+    "minimist": "^1.1.1",
+    "sprintf-js": "^1.0.2"
+  },
+  "bin": {
+    "wci": "cmd.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sterpe/wci.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sterpe/wci/issues"
+  },
+  "homepage": "https://github.com/sterpe/wci"
+}
