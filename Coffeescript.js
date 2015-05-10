@@ -24,6 +24,9 @@ onSourceMessage = function (message) {
 
 onParserMessage = function (message) {
 	var tokenValue
+	, PREFIX_WIDTH = 5
+	, spaces
+	, s = ""
 	;
 	switch (message.type) {
 		case MESSAGES.get("PARSER_SUMMARY"):
@@ -51,6 +54,15 @@ onParserMessage = function (message) {
 			}
 			break;
 		case MESSAGES.get("SYNTAX_ERROR"):
+			spaces = PREFIX_WIDTH + message.arguments[1];
+			for (i = 1; i < spaces; ++i) {
+				s += " ";
+			}
+			s += "^\n*** " + message.arguments[3];
+			if (message.arguments[2] !== null) {
+				s += " [at \"" + message.arguments[2] + "\"]";
+			}
+			console.log(s);
 			break;
 		default:
 			return;

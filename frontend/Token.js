@@ -4,7 +4,8 @@
  * The framework class that represents a token returned by the scanner.
  */
 
-var extract
+var _ = require('lodash')
+, extract
 , currentChar
 , nextChar
 , peekChar
@@ -55,8 +56,8 @@ peekChar = function () {
  * @param source the source from where to fetch the token's characters.
  * @throws Error if an error occurred
  */
-exports.Token = function (source) {
-	var t = {
+exports.Token = function (source, subclass) {
+	var t = _.extend({
 		source: source
 		, type: undefined
 		, text: undefined
@@ -67,7 +68,7 @@ exports.Token = function (source) {
 		, currentChar: currentChar
 		, nextChar: nextChar
 		, peekChar: peekChar
-	}
+	}, subclass || {})
 	;
 
 	return t.extract(), t;

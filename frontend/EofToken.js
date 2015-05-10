@@ -23,7 +23,7 @@ extract = function () {
  * @throws Error if an error occurred.
  */
 exports.EofToken = function (source) {
-	return _.extend(Token(source), {
+	return Token(source, {
 		extract: extract
 		, type: END_OF_FILE
 	});

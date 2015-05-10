@@ -49,6 +49,9 @@ currentChar = function () {
  * @return the next source character.
  * @throws Error if an error occurred.
  */
+consumeChar = function () {
+	this.currentPosition++;
+};
 nextChar = function () {
 	return this.currentPosition++, this.currentChar();
 };

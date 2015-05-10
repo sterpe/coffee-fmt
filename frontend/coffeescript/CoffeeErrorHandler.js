@@ -20,12 +20,12 @@ exports.errorCount = 0;
 exports.flag = function (token, errorCode, parser) {
 	parser.sendMessage({
 		type: MESSAGES.get("SYNTAX_ERROR")
-		, args: {
-			lineNum: token.lineNum
-			, position: token.position
-			, text: token.text
-			, error: errorCode.toString()
-		}
+		, arguments: [
+			token.lineNum
+			, token.position
+			, token.text
+			, errorCode.toString()
+		]
 	});
 	if (++this.errorCount > MAX_ERRORS) {
 		this.abortTranslation(TOO_MANY_ERRORS, parser);
@@ -38,4 +38,14 @@ exports.flag = function (token, errorCode, parser) {
  * @param parser the parser.
  */
 exports.abortTranslation = function (errorCode, parser) {
+	parser.sendMessage({
+		type: MESSAGES.get("SYNTAX_ERROR")
+		, arguments: [
+			0
+			, 0
+			, ""
+			, "FATAL ERROR:  " + errorCode.toString()
+		]
+	});
+	process.exit(errorCode.status);
 };
