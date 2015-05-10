@@ -1,5 +1,6 @@
 var EOL = require('./Constants').get("EOL")
 , EOF = require('./Constants').get("EOF")
+, DUMMY_CHAR = require('./Constants').get("DUMMY_CHAR")
 , SOURCE_LINE = require('../constants/MessageTypes').get("SOURCE_LINE")
 , EventEmitter = require('events').EventEmitter
 , _ = require('lodash')
@@ -36,7 +37,10 @@ currentChar = function () {
 		return EOL;
 	}
 	
-	if (currentPosition > currentLine.length) {
+	if (currentPosition === currentLine.length + 1) {
+		return DUMMY_CHAR;
+	}
+	if (currentPosition > currentLine.length + 1) {
 		this.readLine();
 		return this.nextChar();
 	}

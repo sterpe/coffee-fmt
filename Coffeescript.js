@@ -3,6 +3,7 @@ var FrontendFactory = require('./frontend/FrontendFactory')
 , Source = require('./frontend/Source').Source
 , MESSAGES = require('./constants/MessageTypes')
 , FORMATS = require('./constants/Formats')
+, TOKEN_TYPES = require('./constants/TokenTypes')
 , printf = require('./utils/printf').printf
 , onSourceMessage
 , onParserMessage
@@ -45,7 +46,7 @@ onParserMessage = function (message) {
 			);
 			tokenValue = message.arguments[4];
 			if (tokenValue !== null) {
-				if (token.type === TOKEN_TYPES.get("STRING")) {
+				if (message.arguments[2] === TOKEN_TYPES.get("STRING")) {
 					tokenValue = "\"" + tokenValue + "\"";
 				}
 				printf(FORMATS.get("VALUE_FORMAT")

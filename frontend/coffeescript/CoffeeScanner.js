@@ -9,6 +9,8 @@ var Scanner = require('../Scanner').Scanner
 , EofToken = require('../EofToken').EofToken
 , EolToken = require('../EolToken').EolToken
 , WhitespaceToken = require('../WhitespaceToken').WhitespaceToken
+, CommentToken = require('./CommentToken').CommentToken
+, NumberToken = require('./NumberToken').NumberToken
 , EOF = require('../Constants').get("EOF")
 , EOL = require('../Constants').get("EOL")
 , _ = require('lodash')
@@ -20,13 +22,18 @@ extractToken = function () {
 	, currentChar
 	;
 
+	this.skipDummyChars();
 	currentChar = this.currentChar();
 	if (currentChar === EOF) {
 		token = new EofToken(this.source);
 	} else if (currentChar === EOL) {
 		token = new EolToken(this.source);
+	} else if (/\#/.test(currentChar)) {
+		token = new CommentToken(this.source);
 	} else if (/[^\S\n]/.test(currentChar)) {
 		token = new WhitespaceToken(this.source);
+	} else if (/\d/.test(currentChar)) {
+		token = new NumberToken(this.source);
 	} else {
 		token = new Token(this.source);
 	}

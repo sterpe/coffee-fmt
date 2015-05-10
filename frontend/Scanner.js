@@ -5,10 +5,12 @@
  * will be implemented by language-specific subclasses.
  */
 
-var nextToken
+var DUMMY_CHAR = require('./Constants').get("DUMMY_CHAR")
+, nextToken
 , extractToken
 , currentChar
 , nextChar
+, skipDummyChar
 ;
 
 /**
@@ -49,6 +51,19 @@ nextChar = function () {
 };
 
 /**
+ * Skip the source's dummy char.
+ * @return void
+ */
+skipDummyChars = function () {
+	var currentChar = this.currentChar()
+	;
+
+	while (currentChar === DUMMY_CHAR) {
+		currentChar = this.nextChar();
+	}
+};
+
+/**
  * Constructor.
  * @param source the source to be used with this scanner.
  */
@@ -60,5 +75,6 @@ exports.Scanner = function (source) {
 		, extractToken: extractToken
 		, currentChar: currentChar
 		, nextChar: nextChar
+		, skipDummyChars: skipDummyChars
 	};
 };

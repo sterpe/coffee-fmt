@@ -8,6 +8,7 @@ module.exports = Immutable.Map({
 	, "COMPILE": "compile"
 	, "EXECUTE": "execute"
 	, "EOF": null
+	, "DUMMY_CHAR": {}
 	, "TYPE_EOF": "EOF"
 	, "SOURCE_LINE": "SOURCE_LINE"
 	, "SOURCE_LINE_FORMAT": "%03d %s"
