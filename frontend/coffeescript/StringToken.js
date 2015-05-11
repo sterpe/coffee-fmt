@@ -15,8 +15,10 @@ var Token = require('../Token').Token
 
 extract = function () {
 	this.text = this.extractString();
+	if (this.text) {
 	this.value = this.text.replace(/\\\n/g, ""); // Remove multi-line escapes from the value.
 	this.value = this.value.slice(1, -1); //Remove leading and trailing quote.
+	}
 	this.nextChar();
 };
 
@@ -48,6 +50,11 @@ extractString = function () {
 			escaped = true;
 		}
 		if (currentChar === EOL) {
+			if (!wasEscaped) {
+				this.type = ERROR;
+				this.value = "Unterminated string literal"
+				return null;
+			}
 			this.nextChar(); // Move past the DUMMY_CHAR...
 		}
 		currentChar = this.nextChar();

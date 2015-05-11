@@ -43,3 +43,5 @@ cubes = (math.cube num for num in list)
 "A multi-\
 line \
 string."
+"A broken
+multi-line string."
