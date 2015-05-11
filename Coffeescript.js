@@ -46,7 +46,9 @@ onParserMessage = function (message) {
 			);
 			tokenValue = message.arguments[4];
 			if (tokenValue !== null) {
-				if (message.arguments[2] === TOKEN_TYPES.get("STRING")) {
+				if (message.arguments[2] === TOKEN_TYPES.get("STRING") ||
+						message.arguments[2] === TOKEN_TYPES.get("COMMENT") ||
+						message.arguments[2] === TOKEN_TYPES.get("BLOCK_COMMENT")) {
 					tokenValue = "\"" + tokenValue + "\"";
 				}
 				printf(FORMATS.get("VALUE_FORMAT")

@@ -10,4 +10,5 @@ module.exports = Immutable.Map({
 	, "NUMBER": "NUMBER"
 	, "ERROR": "ERROR"
 	, "STRING": "STRING"
+	, "BLOCK_STRING": "BLOCK_STRING"
 });

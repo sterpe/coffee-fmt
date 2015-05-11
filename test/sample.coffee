@@ -2,7 +2,7 @@
 ###
 SkinnyMochaHalfCaffScript Compiler v1.0
 Released under the MIT License
-###
+###### An inline block comment ###
 
 ### An inline block comment ###
 # Assignment:
@@ -33,3 +33,13 @@ alert "I knew it!" if elvis?
 
 # Array comprehensions:
 cubes = (math.cube num for num in list)
+
+# Strings:
+"I knew it!"
+"I \"knew\" it!"
+"I \\\"knew\\\" it!"
+"I \\"knew\" it!"
+
+"A multi-\
+line \
+string."

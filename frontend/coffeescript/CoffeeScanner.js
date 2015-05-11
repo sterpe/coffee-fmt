@@ -11,6 +11,7 @@ var Scanner = require('../Scanner').Scanner
 , WhitespaceToken = require('../WhitespaceToken').WhitespaceToken
 , CommentToken = require('./CommentToken').CommentToken
 , NumberToken = require('./NumberToken').NumberToken
+, StringToken = require('./StringToken').StringToken
 , EOF = require('../Constants').get("EOF")
 , EOL = require('../Constants').get("EOL")
 , _ = require('lodash')
@@ -34,6 +35,8 @@ extractToken = function () {
 		token = new WhitespaceToken(this.source);
 	} else if (/\d/.test(currentChar)) {
 		token = new NumberToken(this.source);
+	} else if (/(?:'|")/.test(currentChar)) {
+		token = new StringToken(this.source);
 	} else {
 		token = new Token(this.source);
 	}
