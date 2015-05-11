@@ -135,7 +135,7 @@ exports.format = function (buffer, options) {
 	
 		backend.process(iCode, symTab);
 		beautifulCoffeeScript = formatter.fmt(tokenStream, options);
-		console.log(beautifulCoffeeScript);
+		return beautifulCoffeeScript;
 	} catch (e) {
 		console.log('***** Internal translator error *****');
 		console.log(e.stack);

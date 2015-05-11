@@ -28,7 +28,7 @@ if (argv.indent_style.toLowerCase() === "space") {
 options.operation = argv.x ? 'execute' : 'compile';
 try {
 	code = fs.readFileSync(argv.i);
-	coffeeScript.format(code, options);
+	console.log(coffeeScript.format(code, options));
 } catch (e) {
 	console.log(e.stack);
 	process.exit(1);

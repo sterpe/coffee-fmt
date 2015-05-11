@@ -17,6 +17,7 @@
  * @throws Error if an error occurred.
  */
 exports.createBackend = function (operation) {
+	operation = operation || COMPILE;
 	if (operation.toLowerCase() === COMPILE) {
 		return new CodeGenerator();
 	} 
