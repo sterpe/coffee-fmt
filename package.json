@@ -15,7 +15,10 @@
     "test": "node_modules/.bin/tape ./test/tape/*"
   },
   "dependencies": {
-    "minimist": "~1.1.0"
+    "immutable": "^3.7.2",
+    "lodash": "^3.8.0",
+    "minimist": "^1.1.1",
+    "sprintf-js": "^1.0.2"
   },
   "devDependencies": {
     "gulp": "^3.8.10",
