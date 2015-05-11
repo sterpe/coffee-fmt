@@ -5,6 +5,7 @@
  */
 
 var _ = require('lodash')
+, CHAR = require('../constants/TokenTypes').get("CHAR")
 , extract
 , currentChar
 , nextChar
@@ -59,7 +60,7 @@ peekChar = function () {
 exports.Token = function (source, subclass) {
 	var t = _.extend({
 		source: source
-		, type: undefined
+		, type: CHAR
 		, text: undefined
 		, value: undefined
 		, lineNum: source.currentLineNum

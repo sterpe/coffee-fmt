@@ -1,10 +1,10 @@
 
 ###
-SkinnyMochaHalfCaffScript Compiler v1.0
-Released under the MIT License
+	SkinnyMochaHalfCaffScript Compiler v1.0
+	Released under the MIT License
 ###### An inline block comment ###
 
-### An inline block comment ###
+### A different inline block comment ###
 # Assignment:
 number   = 42
 opposite = true
@@ -45,3 +45,25 @@ line \
 string."
 "A broken
 multi-line string."
+
+html =		"""
+		<strong>
+			cup of coffeescript
+		</strong>
+		"""
+#       <strong>
+#         cup of coffeescript
+#       </strong>
+#       """
+
+foo = ''' bar ''';
+
+ detail = """See issue https://github.com/Glavin001/atom-beautify/issues/308
+
+                               To stop seeing this message:
+                               - Uncheck (disable) the deprecated \"Beautify On Save\" option
+                               To enable Beautify on Save for a particular language:
+                               - Go to Atom Beautify's package settings
+                               - Find option for \"Language Config - <Your Language> - Beautify On Save\"
+                               - Check (enable) Beautify On Save option for that particular language
+                               """

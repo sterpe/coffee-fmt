@@ -14,11 +14,45 @@ var Token = require('../Token').Token
 ;
 
 extract = function () {
+	var S
+	, i
+	;
 	this.text = this.extractComment();
-	if (this.type === COMMENT) {
-		this.value = /^#\s*(.*)\s*$/.exec(this.text)[1];
-	} else {
-		this.value = /^\#{3}\s*((.|\n)*\S)\s*\#{3}$/.exec(this.text)[1];
+	if (this.text && this.type === COMMENT) {
+		this.value = this.text;
+	}
+	if (this.text && this.type === BLOCK_COMMENT) {
+		S = this.text.split("\n");
+		if (S.length === 1) {
+			this.value = this.text;
+		} else if (S.length > 1) {
+			index = 1;
+			leastWhitespace = -1;
+			for (i = 1; i < S.length; ++i) {
+				var leadingWs = 0;
+				var j = 0;
+				if (S[i].length === 0 || /^\s*$/.test(S[i])) {
+					continue;
+				}
+				while (/\s/.test(S[i].charAt(j))) {
+					leadingWs++;
+					j++;
+				}
+				if (leastWhitespace === -1) {
+					leastWhitespace = leadingWs;
+					index = i;
+				} else {
+					if ( leadingWs < leastWhitespace) {
+						leastWhitespace = leadingWs;
+						index = i;
+					}
+				}
+			}
+			for (i = 1; i <S.length; ++i) {
+				S[i] = S[i].slice(leastWhitespace);
+			}
+			this.value = S.join("\n");
+		}
 	}
 };
 

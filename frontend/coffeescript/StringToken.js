@@ -14,12 +14,46 @@ var Token = require('../Token').Token
 ;
 
 extract = function () {
+	var S
+	, i
+	;
 	this.text = this.extractString();
-	if (this.text) {
-	this.value = this.text.replace(/\\\n/g, ""); // Remove multi-line escapes from the value.
-	this.value = this.value.slice(1, -1); //Remove leading and trailing quote.
+	if (this.text && this.type === STRING) {
+		this.value = this.text;
 	}
-	this.nextChar();
+	if (this.text && this.type === BLOCK_STRING) {
+		S = this.text.split("\n");
+		if (S.length === 1) {
+			this.value = this.text;
+		} else if (S.length > 1) {
+			index = 1;
+			leastWhitespace = -1;
+			for (i = 1; i < S.length; ++i) {
+				var leadingWs = 0;
+				var j = 0;
+				if (S[i].length === 0 || /^\s*$/.test(S[i])) {
+					continue;
+				}
+				while (/\s/.test(S[i].charAt(j))) {
+					leadingWs++;
+					j++;
+				}
+				if (leastWhitespace === -1) {
+					leastWhitespace = leadingWs;
+					index = i;
+				} else {
+					if ( leadingWs < leastWhitespace) {
+						leastWhitespace = leadingWs;
+						index = i;
+					}
+				}
+			}
+			for (i = 1; i <S.length; ++i) {
+				S[i] = S[i].slice(leastWhitespace);
+			}
+			this.value = S.join("\n");
+		}
+	}
 };
 
 extractString = function () {
@@ -29,6 +63,7 @@ extractString = function () {
 	, escaped
 	, wasEscaped
 	, quote
+	, nextChar
 	;
 	if (!(/(?:'|")/.test(currentChar))) {
 		this.type = ERROR;
@@ -50,19 +85,30 @@ extractString = function () {
 			escaped = true;
 		}
 		if (currentChar === EOL) {
-			if (!wasEscaped) {
-				this.type = ERROR;
-				this.value = "Unterminated string literal"
-				return null;
-			}
 			this.nextChar(); // Move past the DUMMY_CHAR...
 		}
 		currentChar = this.nextChar();
 	}
-	console.log('s', currentChar);
 	S.pop();
 	s += quote;
 	this.quoteType = quote;
+	nextChar = this.nextChar();
+	if (s === quote + quote && nextChar === quote) {
+		//it's a block comment.
+		this.type = BLOCK_STRING;
+		s = "";
+		var r = '(?:.|\\n)*' + quote + '{3}$';
+		r = new RegExp(r);
+		currentChar = this.nextChar();
+		while (!r.test(s)) {
+			s += currentChar;
+			if (currentChar === EOL) {
+				this.nextChar();
+			}
+			currentChar = this.nextChar();
+		}
+		s = quote + quote + quote + s;
+	}
 	return s;
 };
 

@@ -2,6 +2,7 @@ var EOL = require('./Constants').get("EOL")
 , EOF = require('./Constants').get("EOF")
 , DUMMY_CHAR = require('./Constants').get("DUMMY_CHAR")
 , SOURCE_LINE = require('../constants/MessageTypes').get("SOURCE_LINE")
+, SOURCE_EOF = require('../constants/MessageTypes').get("SOURCE_EOF")
 , EventEmitter = require('events').EventEmitter
 , _ = require('lodash')
 , currentChar
@@ -99,6 +100,10 @@ readLine = function () {
 	
 	if (outdex >= buffer.length) {
 		this.currentLine = null;
+		this.sendMessage({
+			type: SOURCE_EOF
+			, arguments: []
+		});
 		return;
 	}
 	while (buffer.charAt(outdex) !== EOL && outdex < buffer.length) {

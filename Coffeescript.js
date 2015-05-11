@@ -1,6 +1,7 @@
 var FrontendFactory = require('./frontend/FrontendFactory')
 , BackendFactory = require('./backend/BackendFactory')
 , Source = require('./frontend/Source').Source
+, formatter = require('./utils/formatter')
 , MESSAGES = require('./constants/MessageTypes')
 , FORMATS = require('./constants/Formats')
 , TOKEN_TYPES = require('./constants/TokenTypes')
@@ -8,6 +9,7 @@ var FrontendFactory = require('./frontend/FrontendFactory')
 , onSourceMessage
 , onParserMessage
 , onBackendMessage
+, tokenStream = []
 ;
 
 onSourceMessage = function (message) {
@@ -17,6 +19,9 @@ onSourceMessage = function (message) {
 				, message.arguments[0]
 				, message.arguments[1]
 			);
+			break;
+		case MESSAGES.get("SOURCE_EOF"):
+			console.log("*** EOF ***");
 			break;
 		default:
 			return;
@@ -45,9 +50,17 @@ onParserMessage = function (message) {
 				, message.arguments[3]
 			);
 			tokenValue = message.arguments[4];
+			tokenStream.push({
+				line: message.arguments[0]
+				, position: message.arguments[1]
+				, type: message.arguments[2]
+				, text: message.arguments[3]
+				, value: message.arguments[4]
+			});
 			if (tokenValue !== null) {
 				if (message.arguments[2] === TOKEN_TYPES.get("STRING") ||
 						message.arguments[2] === TOKEN_TYPES.get("COMMENT") ||
+						message.arguments[2] === TOKEN_TYPES.get("BLOCK_STRING") ||
 						message.arguments[2] === TOKEN_TYPES.get("BLOCK_COMMENT")) {
 					tokenValue = "\"" + tokenValue + "\"";
 				}
@@ -99,6 +112,7 @@ module.exports = function (buffer, options) {
 	, backend
 	, iCode
 	, symTab
+	, beautifulCoffeeScript
 	;
 
 	try {
@@ -117,6 +131,8 @@ module.exports = function (buffer, options) {
 		symTab = parser.symTab;
 	
 		backend.process(iCode, symTab);
+		beautifulCoffeeScript = formatter.fmt(tokenStream, {tab: '        ' });
+		console.log(beautifulCoffeeScript);
 	} catch (e) {
 		console.log('***** Internal translator error *****');
 		console.log(e.stack);
