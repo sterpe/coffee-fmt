@@ -1,6 +1,6 @@
 {
   "name": "coffee-fmt",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "a `gofmt` inspired Coffeescript formatter/beautifier.",
   "author": "Steven R. Terpe <srterpe@gmail.com> (https://github.com/sterpe)",
   "main": "./lib/fmt.js",
