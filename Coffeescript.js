@@ -21,7 +21,7 @@ onSourceMessage = function (message) {
 			);
 			break;
 		case MESSAGES.get("SOURCE_EOF"):
-			console.log("*** EOF ***");
+			printf("*** %s ****", "EOF");
 			break;
 		default:
 			return;
@@ -104,7 +104,7 @@ onBackendMessage = function (message) {
 	}
 };
 
-module.exports = function (buffer, options) {
+exports.format = function (buffer, options) {
 	var intermediate = options.intermediate || false
 	, xref = options.xref || false
 	, source
@@ -115,6 +115,9 @@ module.exports = function (buffer, options) {
 	, beautifulCoffeeScript
 	;
 
+	if (!options.debug) {
+		printf = function () {};
+	}
 	try {
 		source = new Source(buffer);
 		source.addListener('message', onSourceMessage)
@@ -131,7 +134,7 @@ module.exports = function (buffer, options) {
 		symTab = parser.symTab;
 	
 		backend.process(iCode, symTab);
-		beautifulCoffeeScript = formatter.fmt(tokenStream, {tab: '        ' });
+		beautifulCoffeeScript = formatter.fmt(tokenStream, options);
 		console.log(beautifulCoffeeScript);
 	} catch (e) {
 		console.log('***** Internal translator error *****');

@@ -16,10 +16,11 @@ var argv = require('minimist')(process.argv.slice(2))
 , options = {
 	tab: argv.indent_style === "space" ? SPACE : TAB
 	, newLine: LINEBREAK[argv.new_line] || LF
+	, debug: argv.debug && argv.debug.toLowerCase() === 'true' ? true : false
 }
 , code
 ;
-if (argv.indent_style === "space") {
+if (argv.indent_style.toLowerCase() === "space") {
 	for (i = 1; i < argv.indent_size;  i+= 1) {
 		options.tab += SPACE;
 	}
@@ -27,7 +28,7 @@ if (argv.indent_style === "space") {
 options.operation = argv.x ? 'execute' : 'compile';
 try {
 	code = fs.readFileSync(argv.i);
-	coffeeScript(code, options);
+	coffeeScript.format(code, options);
 } catch (e) {
 	console.log(e.stack);
 	process.exit(1);

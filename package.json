@@ -2,31 +2,19 @@
   "name": "coffee-fmt",
   "version": "0.7.0",
   "description": "a `gofmt` inspired Coffeescript formatter/beautifier.",
-  "author": {
-    "name": "Steven R. Terpe",
-    "email": "srterpe@gmail.com",
-    "url": "https://github.com/sterpe"
-  },
+  "author": "Steven R. Terpe <srterpe@gmail.com> (https://github.com/sterpe)",
   "main": "./lib/fmt.js",
   "bin": {
-    "coffee-fmt": "./lib/cmd.js"
+    "coffee-fmt": "./bin/cmd.js"
   },
   "scripts": {
-    "test": "node_modules/.bin/tape ./test/tape/*"
+    "test": "tape ./test/tape/*"
   },
   "dependencies": {
     "immutable": "^3.7.2",
     "lodash": "^3.8.0",
     "minimist": "^1.1.1",
     "sprintf-js": "^1.0.2"
-  },
-  "devDependencies": {
-    "gulp": "^3.8.10",
-    "gulp-coffee": "^2.3.1",
-    "gulp-util": "^3.0.3",
-    "mkdirp": "^0.5.0",
-    "rimraf": "^2.2.8",
-    "tape": "^3.5.0"
   },
   "repository": {
     "type": "git",
@@ -47,5 +35,9 @@
   "bugs": {
     "url": "https://github.com/sterpe/coffee-fmt/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/sterpe/coffee-fmt",
+  "directories": {
+    "test": "test"
+  }
 }

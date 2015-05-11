@@ -8,6 +8,7 @@ a `gofmt` inspired Coffeescript formatter/beautifier.
 
 	coffee-fmt --indent_style [space|tab] \
 		 --indent_size [Integer, ignored when using tabs] \
+		 --debug=true (This will print all parse info to stdout as well, defaults to false)
 		 -i filename.coffee >> transformed.coffee
 
 
