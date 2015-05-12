@@ -78,7 +78,7 @@ onParserMessage = function (message) {
 			if (message.arguments[2] !== null) {
 				s += " [at \"" + message.arguments[2] + "\"]";
 			}
-			console.log(s);
+			printf("%s", s);
 			throw new Error(s);
 			break;
 		default:
@@ -138,8 +138,8 @@ exports.format = function (buffer, options) {
 		beautifulCoffeeScript = formatter.fmt(tokenStream, options);
 		return beautifulCoffeeScript;
 	} catch (e) {
-		console.log('***** Internal translator error *****');
-		console.log(e.stack);
+//		console.log('***** Internal translator error *****');
+//		console.log(e.stack);
 		throw e;
 	}
 };
