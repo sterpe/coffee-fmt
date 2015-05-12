@@ -29,7 +29,11 @@ a `gofmt` inspired Coffeescript formatter/beautifier.
 	coffee = fs.readFileSync('filename.coffee');
 	coffee = coffee.toString();
 
-	coffee = fmt.format(coffee, options);
+	try {
+		coffee = fmt.format(coffee, options);
+	} catch (e) {
+		//Whoops...something went wrong, error details logged to console.
+	}
 
 	console.log(coffee);
 ```
