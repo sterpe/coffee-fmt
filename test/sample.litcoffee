@@ -229,7 +229,7 @@ After the `forEach` completes, we have a file that is formatted line by line.  H
 
 * Indentation should be formatted according to the parameters specified by the user.
 
-This haven''t been implemented yet.
+This haven't been implemented yet.
 
 ## Exports
 

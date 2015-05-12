@@ -9,6 +9,7 @@ var Token = require('../Token').Token
 , STRING = require('../../constants/TokenTypes').get("STRING")
 , BLOCK_STRING = require('../../constants/TokenTypes').get("BLOCK_STRING")
 , EOL = require('../../constants').get("EOL")
+, EOF = require('../../constants').get("EOF")
 , extract
 , extractString
 ;
@@ -87,6 +88,11 @@ extractString = function () {
 		if (currentChar === EOL) {
 			this.nextChar(); // Move past the DUMMY_CHAR...
 		}
+		if (currentChar === EOF) {
+			this.type = ERROR
+			this.value = "Unterminated string literal."
+			return null;
+		}
 		currentChar = this.nextChar();
 	}
 	S.pop();
@@ -104,6 +110,11 @@ extractString = function () {
 			s += currentChar;
 			if (currentChar === EOL) {
 				this.nextChar();
+			}
+			if (currentChar === EOF) {
+				this.type = ERROR
+				this.value = "Unterminated string literal."
+				return null;
 			}
 			currentChar = this.nextChar();
 		}
