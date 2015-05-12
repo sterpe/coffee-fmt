@@ -9,6 +9,7 @@ var Token = require('../Token').Token
 , COMMENT = require('../../constants/TokenTypes').get("COMMENT")
 , BLOCK_COMMENT = require('../../constants/TokenTypes').get("BLOCK_COMMENT")
 , EOL = require('../../constants').get("EOL")
+, EOF = require('../../constants').get("EOF")
 , extract
 , extractComment
 ;
@@ -76,6 +77,11 @@ extractComment = function () {
 			s += currentChar;
 			if (currentChar === EOL) {
 				this.nextChar(); //Skip the DUMMY_CHAR
+			}
+			if (currentChar === EOF) {
+				this.type = ERROR;
+				this.value = "Unterminated block comment.";
+				return null;
 			}
 			currentChar = this.nextChar();
 		}

@@ -79,6 +79,7 @@ onParserMessage = function (message) {
 				s += " [at \"" + message.arguments[2] + "\"]";
 			}
 			console.log(s);
+			throw new Error(s);
 			break;
 		default:
 			return;
@@ -139,5 +140,6 @@ exports.format = function (buffer, options) {
 	} catch (e) {
 		console.log('***** Internal translator error *****');
 		console.log(e.stack);
+		throw e;
 	}
 };

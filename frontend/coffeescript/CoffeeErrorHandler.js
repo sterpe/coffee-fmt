@@ -5,7 +5,8 @@
  */
 
 var MESSAGES = require('../../constants/MessageTypes')
-, MAX_ERRORS = 25
+, MAX_ERRORS = 0
+, TOO_MANY_ERRORS = "TOO_MANY_ERRORS"
 ;
 
 exports.errorCount = 0;
@@ -47,5 +48,4 @@ exports.abortTranslation = function (errorCode, parser) {
 			, "FATAL ERROR:  " + errorCode.toString()
 		]
 	});
-	process.exit(errorCode.status);
 };
