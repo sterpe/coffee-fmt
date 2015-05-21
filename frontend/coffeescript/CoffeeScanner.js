@@ -12,6 +12,7 @@ var Scanner = require('../Scanner').Scanner
 , CommentToken = require('./CommentToken').CommentToken
 , StringToken = require('./StringToken').StringToken
 , OperatorToken = require('./OperatorToken').OperatorToken
+, NumberToken = require('./NumberToken').NumberToken
 , WordToken = require('./WordToken').WordToken
 , EOF = require('../Constants').get("EOF")
 , EOL = require('../Constants').get("EOL")
@@ -40,6 +41,8 @@ extractToken = function () {
 		token = new OperatorToken(this.source);
 	} else if (/^[^\s\d\!\#\%\^\&\*\(\)\-\+\=\{\}\|\[\]\\\:\"\;\'\,\.\/\<\>\?]/.test(currentChar)) {
 		token = new WordToken(this.source);
+	} else if (/^\d/.test(currentChar)) {
+		token = new NumberToken(this.source);
 	} else {
 		token = new Token(this.source);
 	}
