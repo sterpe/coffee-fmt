@@ -5,7 +5,7 @@
  */
 
 var MESSAGES = require('../../constants/MessageTypes')
-, MAX_ERRORS = 0
+, MAX_ERRORS = 25
 , TOO_MANY_ERRORS = "TOO_MANY_ERRORS"
 ;
 

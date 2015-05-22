@@ -6,6 +6,7 @@ var FrontendFactory = require('./frontend/FrontendFactory')
 , FORMATS = require('./constants/Formats')
 , TOKEN_TYPES = require('./constants/TokenTypes')
 , printf = require('./utils/printf').printf
+, sprintf = require('sprintf-js').sprintf
 , onSourceMessage
 , onParserMessage
 , onBackendMessage
@@ -79,7 +80,11 @@ onParserMessage = function (message) {
 				s += " [at \"" + message.arguments[2] + "\"]";
 			}
 			printf("%s", s);
-			throw new Error(s);
+			throw new Error(sprintf("Line %d:%d, %s",
+				message.arguments[0]
+				, message.arguments[1]
+				, message.arguments[3]
+			));
 			break;
 		default:
 			return;
