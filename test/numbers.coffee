@@ -15,7 +15,7 @@
 10.99e-7
 
 # binary numbers
-0b10 0b0 0b111 0b43
+0b10 0b0 0b111 
 
 # hex
-0x0 0X0 0XAF 0x11 0xff 0xG
+0x0 0X0 0XAF 0x11 0xff 

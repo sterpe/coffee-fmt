@@ -18,18 +18,18 @@ exports.fmt = function (tokenStream, options) {
 				token = tokenStream.pop();
 			}
 			if (token.type !== END_OF_LINE) {
-			if (indents.length && whitespaceCount <= indents[indents.length - 1].whitespaceCount) {
-				while(indents.length && indents[indents.length - 1].whitespaceCount >= whitespaceCount) {
-					indents.pop();
+				if (indents.length && whitespaceCount <= indents[indents.length - 1].whitespaceCount) {
+					while(indents.length && indents[indents.length - 1].whitespaceCount >= whitespaceCount) {
+						indents.pop();
+					}
+					indents.push({whitespaceCount: whitespaceCount});
+				} else {
+					indents.push({ whitespaceCount: whitespaceCount });
 				}
-				indents.push({whitespaceCount: whitespaceCount});
-			} else {
-				indents.push({ whitespaceCount: whitespaceCount });
-			}
-			for (var i =0; i < indents.length - 1; i++) {
-				s+= options.tab;
-				position += options.tab.length;
-			}
+				for (var i =0; i < indents.length - 1; i++) {
+					s+= options.tab;
+					position += options.tab.length;
+				}
 			}
 			isNewLine = false;
 		}
@@ -56,8 +56,20 @@ exports.fmt = function (tokenStream, options) {
 				position += S[0].length;
 			}
 		} else {
-			s += token.value || token.text;
-			position += (token.value || token.text).length;
+			/*
+			 * Remove the extraneous inline whitespace...
+			 */
+			if (token.type === WHITESPACE) {
+				while (tokenStream[tokenStream.length - 1].type === WHITESPACE) {
+					tokenStream.pop();
+				}
+				s += " "; //Single space
+				position += " ".length;
+			}
+			else {
+				s += token.value || token.text;
+				position += (token.value || token.text).length;
+			}
 		}
 		if (token.type === END_OF_LINE) {
 			isNewLine = true;
