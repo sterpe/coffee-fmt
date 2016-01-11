@@ -1,4 +1,4 @@
-# coffee-fmt
+# coffee-fmt [![Code Climate](https://codeclimate.com/github/sterpe/coffee-fmt/badges/gpa.svg)](https://codeclimate.com/github/sterpe/coffee-fmt)
 
 
 a `gofmt` inspired Coffeescript formatter/beautifier.
