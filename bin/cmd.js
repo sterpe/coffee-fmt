@@ -31,7 +31,7 @@ if (argv.help !== undefined || argv.indent_style === undefined || argv.i === und
 }
 
 if (argv.indent_style.toLowerCase() === "space") {
-	for (i = 1; i < argv.indent_size;  i+= 1) {
+	for (var i = 1; i < argv.indent_size;  i+= 1) {
 		options.tab += SPACE;
 	}
 }

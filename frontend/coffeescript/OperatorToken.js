@@ -71,11 +71,7 @@ extractOperator = function () {
 		s += currentChar;
 		currentChar = this.nextChar();
 	}
-	if (s === '..') {
-		this.type = ERROR;
-		this.value = null;
-		return null;
-	}
+
 	this.value = s;
 	return s;
 };
